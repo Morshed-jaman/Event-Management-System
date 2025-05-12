@@ -1,40 +1,57 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Venue Details') }}
+        <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500 drop-shadow-sm">
+            Venue Details
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white p-6 shadow rounded-lg">
-                <h3 class="text-xl font-medium text-gray-900 mb-4">{{ $venue->name }}</h3>
-                
-                <p><strong>Location:</strong> {{ $venue->location }}</p>
-                <p><strong>Capacity:</strong> {{ $venue->capacity }}</p>
+    <div class="py-12 bg-gradient-to-br from-gray-100 to-indigo-100 min-h-screen">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-indigo-100">
 
+                <!-- Venue Title -->
+                <h3 class="text-2xl font-semibold text-indigo-800 mb-6">{{ $venue->name }}</h3>
+
+                <!-- Venue Info -->
+                <div class="mb-4">
+                    <span class="font-medium text-gray-700">📍 Location:</span>
+                    <p class="text-gray-800 mt-1">{{ $venue->location }}</p>
+                </div>
+
+                <div class="mb-6">
+                    <span class="font-medium text-gray-700">🏛️ Capacity:</span>
+                    <p class="text-gray-800 mt-1">{{ $venue->capacity }}</p>
+                </div>
+
+                <!-- Admin Controls -->
                 @if (auth()->user()->is_admin)
-                    <!-- Only show the Edit and Delete buttons if the user is an admin -->
-                    <div class="mt-4">
-                        <a href="{{ route('venues.edit', $venue->id) }}" class="text-blue-500 hover:underline">Edit Venue</a>
-                    </div>
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <a href="{{ route('venues.edit', $venue->id) }}"
+                           class="px-5 py-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-sm font-semibold rounded-full shadow hover:from-yellow-500 hover:to-yellow-700 transition">
+                            ✏ Edit Venue
+                        </a>
 
-                    <div class="mt-2">
-                        <form action="{{ route('venues.destroy', $venue->id) }}" method="POST">
+                        <form action="{{ route('venues.destroy', $venue->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this venue?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:underline">Delete Venue</button>
+                            <button type="submit"
+                                    class="px-5 py-2 bg-gradient-to-r from-red-500 to-red-700 text-white text-sm font-semibold rounded-full shadow hover:from-red-600 hover:to-red-800 transition">
+                                🗑 Delete Venue
+                            </button>
                         </form>
                     </div>
                 @else
-                    <!-- If not admin, display a no permission message -->
-                    <div class="mt-4">
-                        <span class="text-gray-500">You do not have permission to edit or delete this venue.</span>
+                    <div class="mt-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl shadow">
+                        🚫 You do not have permission to edit or delete this venue.
                     </div>
                 @endif
 
-                <div class="mt-6">
-                    <a href="{{ route('venues.index') }}" class="text-gray-700 underline">← Back to Venues</a>
+                <!-- Back Link -->
+                <div class="mt-8">
+                    <a href="{{ route('venues.index') }}"
+                       class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:underline transition">
+                        ← Back to Venues
+                    </a>
                 </div>
             </div>
         </div>
